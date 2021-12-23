@@ -10,7 +10,7 @@ bot = telebot.TeleBot('5091025644:AAHdtFbTSvVL5LJVQqsQqo8rv9I3dJ1Uavw')
 start_phrases = ['пошла нахуй', 'хуйню высрал', 'сука', 'ебншк????', 'отсоси', 'э']
 
 
-@bot.message_handler(commands='start')
+@bot.message_handler(commands=['start'])
 def answer(message):
     x = random.choice([0, 1, 2, 3, 4, 5])
     if x > 0:
