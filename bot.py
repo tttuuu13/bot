@@ -7,7 +7,7 @@ import os
 server = Flask(__name__)
 bot = telebot.TeleBot('5091025644:AAHdtFbTSvVL5LJVQqsQqo8rv9I3dJ1Uavw')
 
-start_phrases = ['пошла нахуй', 'хуйню высрал', 'сука', 'ебншк????', 'отсоси', 'э']
+start_phrases = ['пошла нахуй', 'хуйню высрал', 'сука', 'ебншк????', 'отсоси', 'э', 'ты солнце']
 
 
 @bot.message_handler(commands=['start'])
@@ -17,7 +17,8 @@ def answer(message):
         bot.send_message(message.chat.id, random.choice(start_phrases))
     else:
         bot.send_sticker(message.chat.id, random.choice(['CAACAgIAAxkBAAEC4nZhO6XViAaTaT0ihQxTMtTtaelDSQACCAADwDZPE29sJgveGptpIAQ',
-                                                         'CAACAgIAAxkBAAEDjBdhxHe4wFsocbCXdZpJQpSmKRtPCQACGgADWgw3FTtDBvTnXbCyIwQ']))
+                                                         'CAACAgQAAxkBAAEDjBthxIECLvoOdIyZPPh1IHRgmlFTVgACvgoAArzKMVBTZLKRMN5o5yME',
+                                                         'CAACAgQAAxkBAAEDjB1hxIE0RaUWsMSwrorvX0fQxEMK5QAC6AoAAt9QiFHGFAABQGOzE1cjBA']))
 
 
 
