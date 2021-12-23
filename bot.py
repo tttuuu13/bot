@@ -35,7 +35,7 @@ def getMessage():
 @server.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url='https://shxa-bot.herokuapp.com//' + '5091025644:AAHdtFbTSvVL5LJVQqsQqo8rv9I3dJ1Uavw')
+    bot.set_webhook(url='https://shxa-bot.herokuapp.com/' + '5091025644:AAHdtFbTSvVL5LJVQqsQqo8rv9I3dJ1Uavw')
     return "!", 200
 
 if __name__ == '__main__':
