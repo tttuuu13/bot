@@ -7,18 +7,29 @@ import os
 server = Flask(__name__)
 bot = telebot.TeleBot('5091025644:AAHdtFbTSvVL5LJVQqsQqo8rv9I3dJ1Uavw')
 
-start_phrases = ['пошла нахуй', 'хуйню высрал', 'сука', 'ебншк????', 'отсоси', 'э', 'ты солнце']
+start_phrases = ['пошла нахуй', 'хуйню высрал', 'сука', 'ебншк????', 'отсоси', 'э']
+oxxxy_phrases = ["говно", "залупа", "пенис", "хер", "давалка", "хуй", "блядина",
+                 "головка", "шлюха", "жопа", "член", "еблан", "петух...", "мудила",
+                 "рукоблуд", "ссанина", "очко", "блядун", "вагина", "сука", "ебланище",
+                 "влагалище", "пердун", "дрочила", "пидор", "пизда", "туз", "малафья",
+                 "гомик", "мудила", "пилотка", "манда", "анус", "вагина", "путана",
+                 "пидрила", "шалава", "хуила", "мошонка", "елда", "РАУНД!"]
 
 
 @bot.message_handler(commands=['start'])
 def answer(message):
-    x = random.choice([0, 1, 2, 3, 4, 5])
-    if x > 0:
-        bot.send_message(message.chat.id, random.choice(start_phrases))
+    name = message.from_user.first_name
+    if message.chat.id == 947771996:
+        bot.send_message(message.chat.id, f"ого! это же топ шха {name}!")
     else:
-        bot.send_sticker(message.chat.id, random.choice(['CAACAgIAAxkBAAEC4nZhO6XViAaTaT0ihQxTMtTtaelDSQACCAADwDZPE29sJgveGptpIAQ',
-                                                         'CAACAgQAAxkBAAEDjBthxIECLvoOdIyZPPh1IHRgmlFTVgACvgoAArzKMVBTZLKRMN5o5yME',
-                                                         'CAACAgQAAxkBAAEDjB1hxIE0RaUWsMSwrorvX0fQxEMK5QAC6AoAAt9QiFHGFAABQGOzE1cjBA']))
+        bot.send_message(message.chat.id, f"Приветствую, {name}!")
+
+@bot.message_handler(func=lambda message: message.text.lower() in oxxxy_phrases)
+def battle(message):
+    try:
+        bot.send_message(message.chat.id, oxxxy_phrases[oxxxy_phrases.index(message.text.lower()) + 1])
+    except:
+        bot.send_message(message.chat.id, "втф")
 
 
 
