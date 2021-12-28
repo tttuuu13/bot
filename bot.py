@@ -19,12 +19,12 @@ oxxxy_phrases = ["говно", "залупа", "пенис", "хер", "дава
 @bot.message_handler(commands=['start'])
 def answer(message):
     name = message.from_user.first_name
-    if message.chat.id == 947771996:
+    if message.from_user.id == 947771996:
         bot.send_message(message.chat.id, f"ого! это же топ шха {name}!")
     else:
         bot.send_message(message.chat.id, f"Приветствую, {name}!")
 
-@bot.message_handler(lambda m: True)
+@bot.message_handler(content_type = ["text"])
 def ans(message):
     bot.send_message(message.chat.id, f"{message.from_user.first_name}, ебало захлопни"
 
