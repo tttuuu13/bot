@@ -24,12 +24,10 @@ def answer(message):
     else:
         bot.send_message(message.chat.id, f"Приветствую, {name}!")
 
-@bot.message_handler(content_type=["text"], func=lambda message: message.text.lower() in oxxxy_phrases)
-def battle(message):
-    try:
-        bot.send_message(message.chat.id, oxxxy_phrases[oxxxy_phrases.index(message.text.lower()) + 1])
-    except:
-        bot.send_message(message.chat.id, "втф")
+@bot.message_handler(lambda m: True)
+def ans(message):
+    bot.send_message(message.chat.id, f"{message.from_user.first_name}, ебало захлопни"
+
 
 
 
