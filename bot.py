@@ -26,7 +26,7 @@ def answer(message):
 
 @bot.message_handler(content_type = ["text"])
 def ans(message):
-    bot.send_message(message.chat.id, f"{message.from_user.first_name}, ебало захлопни"
+    bot.send_message(message.chat.id, f"{message.from_user.first_name}, ебало захлопни")
 
 
 
