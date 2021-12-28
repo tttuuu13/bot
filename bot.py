@@ -24,7 +24,7 @@ def answer(message):
     else:
         bot.send_message(message.chat.id, f"Приветствую, {name}!")
 
-@bot.message_handler(func=lambda message: message.text.lower() in oxxxy_phrases)
+@bot.message_handler(content_type=["text"], func=lambda message: message.text.lower() in oxxxy_phrases)
 def battle(message):
     try:
         bot.send_message(message.chat.id, oxxxy_phrases[oxxxy_phrases.index(message.text.lower()) + 1])
