@@ -5,3 +5,4 @@ Pillow==8.3.2
 pyTelegramBotAPI==3.7.5
 requests==2.26.0
 thefuzz
+psycopg2
