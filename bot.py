@@ -299,7 +299,6 @@ def send(message):
         return
     
     results = search(message.text)
-    print(results)
     if results == [] or results[0][1] < 30:
         bot.send_message(message.chat.id, "Похоже ничего не найдено")
         return
