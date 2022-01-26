@@ -6,3 +6,5 @@ pyTelegramBotAPI==3.7.5
 requests==2.26.0
 thefuzz
 psycopg2
+Google-Images-Search
+windows-curses
