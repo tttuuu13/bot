@@ -2,13 +2,12 @@ import telebot
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
 import random
 import io
-import os
 from flask import Flask, request
 import dtb
 from PIL import Image
 import phrases
 from math import ceil
-from search import search
+from search import search, google_search
 
 
 server = Flask(__name__)
@@ -299,12 +298,17 @@ def send(message):
         return
     
     results = search(message.text)
-    if results == [] or results[0][1] < 30:
-        bot.send_message(message.chat.id, "Похоже ничего не найдено")
+    print(results)
+    if results == [] or results[0][1] < 70:
+        try:
+            bot.send_photo(message.chat.id, google_search(message.text), caption="в моей базе ничего не нашлось, но я погуглил для тебя")
+        except Exception as e:
+            print(e)
+            bot.send_message(message.chat.id, "Похоже ничего не найдено")
         return
     other = InlineKeyboardMarkup()
     for i in results[1:]:
-        if i[1] > 30:
+        if i[1] > 70:
             index = names.index(i[0])
             other.add(InlineKeyboardButton(i[0], callback_data=f"show_{index}"))
         else:
@@ -313,15 +317,15 @@ def send(message):
     r = dtb.get_by_index(index)
     if r[1] != None and r[2] != None:
         bot.send_photo(message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}\n{r[1]}')
-        if results[1][1] > 30:
+        if results[1][1] > 70:
             bot.send_message(message.chat.id, "вот еще пара вариантов:", reply_markup=other)
     elif r[1] != None:
         bot.send_message(message.chat.id, f'{r[0]}\n{r[1]}')
-        if results[1][1] > 30:
+        if results[1][1] > 70:
             bot.send_message(message.chat.id, "вот еще пара вариантов:", reply_markup=other)
     else:
         bot.send_photo(message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}')
-        if results[1][1] > 30:
+        if results[1][1] > 70:
             bot.send_message(message.chat.id, "вот еще пара вариантов:", reply_markup=other)
 
 
