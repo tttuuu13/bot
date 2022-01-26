@@ -2,6 +2,7 @@ import telebot
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
 import random
 import io
+import os
 from flask import Flask, request
 import dtb
 from PIL import Image
