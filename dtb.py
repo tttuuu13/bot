@@ -1,7 +1,5 @@
-from re import L
 import psycopg2
 from config import host, user, password, db_name
-from PIL import Image
 
 
 def add(name, description, image):
@@ -80,7 +78,7 @@ def get_names():
         if connection:
             connection.close()
 
-def delete_row(index):
+def delete_row(name):
     try:
         connection = psycopg2.connect(
             host=host,
@@ -93,8 +91,8 @@ def delete_row(index):
         
         with connection.cursor() as cursor:
             cursor.execute(
-                """DELETE FROM formulas LIMIT %s OFFSET %s;""",
-                (index+1, index)
+                """DELETE FROM formulas WHERE name = %s;""",
+                (name,)
             )
             return True
     except Exception as e:

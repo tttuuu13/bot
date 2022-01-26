@@ -1,20 +1,13 @@
-from argparse import Namespace
-from ast import Str
-from email import message
-from unittest import result
-from urllib.parse import non_hierarchical
 import telebot
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
 import random
-import os
 import io
 from flask import Flask, request
 import dtb
 from PIL import Image
 import phrases
 from math import ceil
-from thefuzz import fuzz
-from thefuzz import process
+from search import search
 
 
 server = Flask(__name__)
@@ -68,19 +61,19 @@ def show_all(message, page=1):
     if message.chat.id not in user_dict.keys():
         user_dict[message.chat.id] = Formula()
     names = dtb.get_names()
-    for i in sorted(names)[20*(page-1):20*page]:
+    for i in sorted(names)[10*(page-1):10*page]:
         name = i
         index = names.index(name)
         if len(i) > 25:
             i = f"{i[:25]}..."
         markup.add(InlineKeyboardButton(i, callback_data=f"open_{index}|{page}"))
-    if ceil(len(dtb.get_names())/20) == 0:
+    if ceil(len(dtb.get_names())/10) == 0:
         markup.add(InlineKeyboardButton("ничего нет", callback_data="ничего нет"))
-    elif page == 1 and ceil(len(dtb.get_names())/20) == 1:
+    elif page == 1 and ceil(len(dtb.get_names())/10) == 1:
         pass
     elif page == 1:
         markup.add(InlineKeyboardButton("▶", callback_data=f"page_{page+1}"))
-    elif page == ceil(len(dtb.get_names())/20):
+    elif page == ceil(len(dtb.get_names())/10):
         markup.add(InlineKeyboardButton("◀", callback_data=f"page_{page-1}"))
     else:
         markup.add(InlineKeyboardButton("◀", callback_data=f"page_{page-1}"),
@@ -126,9 +119,20 @@ def go_back(query):
 def delete(query):
     index = int(list(query.data.split("|"))[0][7:])
     page = list(query.data.split("|"))[1]
-    dtb.delete_row(index)
+    dtb.delete_row(dtb.get_names()[index])
     query.data = f"go_back_{page}"
     go_back(query)
+
+@bot.callback_query_handler(func=lambda query: query.data[:5] == "show_")
+def show(query):
+    index = int(query.data[5:])
+    r = dtb.get_by_index(index)
+    if r[1] != None and r[2] != None:
+        bot.send_photo(query.message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}\n{r[1]}')
+    elif r[1] != None:
+        bot.send_message(query.message.chat.id, f'{r[0]}\n{r[1]}')
+    else:
+        bot.send_photo(query.message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}')
 
 
 # ДОБАВЛЕНИЕ ФОРМУЛЫ
@@ -244,6 +248,14 @@ def upload_to_db(query):
         bot.edit_message_reply_markup(query.message.chat.id, user_dict[query.message.chat.id].last_message.message_id)
     except:
         pass
+    counter = 0
+    names = dtb.get_names()
+    if formula.name in names:
+        counter = 1
+        while f"{formula.name} ({counter})" in names:
+            counter += 1
+    if counter != 0:
+        formula.name = f"{formula.name} ({counter})"
     if formula.description != "skip" and formula.picture != "skip":
         r = dtb.add(formula.name, formula.description, formula.picture)
         if r:
@@ -268,37 +280,50 @@ def upload_to_db(query):
 @bot.message_handler(content_types=['text'])
 def send(message):
     names = dtb.get_names()
-    found = False
-    for name in process.extract(message.text, names, limit=2):
-        if name[1] < 80:
-            continue
-        name = name[0]
-        index = names.index(name)
-        r = dtb.get_by_index(index)
-        if r[1] != None and r[2] != None:
-            bot.send_photo(message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}\n{r[1]}')
-        elif r[1] != None:
-            bot.send_message(message.chat.id, f'{r[0]}\n{r[1]}')
-        else:
-            bot.send_photo(message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}')
-        found = True
-        
-    if not found:
+    counter = 0
+    same = []
+    for name in names:
+        if message.text.lower() in name.lower():
+            counter += 1
+            same.append(name)
+    if counter > 1:
+        if len(message.text) < 3:
+            bot.send_message(message.chat.id, "уточни пожалуйста🥺")
+            return
+        markup = InlineKeyboardMarkup()
+        for b in same:
+            index = names.index(b)
+            markup.add(InlineKeyboardButton(b, callback_data=f"show_{index}"))
+        bot.send_message(message.chat.id, "уточни пожалуйста:", reply_markup=markup)
+        return
+    
+    results = search(message.text)
+    print(results)
+    if results == [] or results[0][1] < 30:
         bot.send_message(message.chat.id, "Похоже ничего не найдено")
+        return
+    other = InlineKeyboardMarkup()
+    for i in results[1:]:
+        if i[1] > 30:
+            index = names.index(i[0])
+            other.add(InlineKeyboardButton(i[0], callback_data=f"show_{index}"))
+        else:
+            break
+    index = names.index(results[0][0])
+    r = dtb.get_by_index(index)
+    if r[1] != None and r[2] != None:
+        bot.send_photo(message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}\n{r[1]}')
+        if results[1][1] > 30:
+            bot.send_message(message.chat.id, "вот еще пара вариантов:", reply_markup=other)
+    elif r[1] != None:
+        bot.send_message(message.chat.id, f'{r[0]}\n{r[1]}')
+        if results[1][1] > 30:
+            bot.send_message(message.chat.id, "вот еще пара вариантов:", reply_markup=other)
+    else:
+        bot.send_photo(message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}')
+        if results[1][1] > 30:
+            bot.send_message(message.chat.id, "вот еще пара вариантов:", reply_markup=other)
 
 
-@server.route('/' + '5091025644:AAHdtFbTSvVL5LJVQqsQqo8rv9I3dJ1Uavw', methods=['POST'])
-def getMessage():
-    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-    return "!", 200
-
-
-@server.route("/")
-def webhook():
-    bot.remove_webhook()
-    bot.set_webhook(url='https://shxa-bot.herokuapp.com/' + '5091025644:AAHdtFbTSvVL5LJVQqsQqo8rv9I3dJ1Uavw')
-    return "!", 200
-
-if __name__ == '__main__':
-    server.debug = True
-    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+bot.remove_webhook()
+bot.polling()
