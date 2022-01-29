@@ -1,14 +1,14 @@
+from email import message
 import telebot
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
 import random
 import io
-import os
 from flask import Flask, request
 import dtb
 from PIL import Image
 import phrases
 from math import ceil
-from search import search, google_search
+from search import gdz_search, search, google_search
 
 
 server = Flask(__name__)
@@ -34,7 +34,7 @@ def oxxxy(message):
     bot.send_message(message.chat.id, phrases.oxxxy_phrases[phrases.oxxxy_phrases.index(message.text.lower()) + 1])
 
 # будет отвечать на слово, содержащее "бот"
-@bot.message_handler(func=lambda message: message.text != None and "бот" in message.text.lower())
+@bot.message_handler(func=lambda message: message.text != None and "бот" == message.text.lower()[:3])
 def answer(message):
     bot.send_message(message.chat.id, random.choice(phrases.bot_answer).format(name=message.from_user.first_name))
 
@@ -277,6 +277,19 @@ def upload_to_db(query):
             bot.send_message(query.message.chat.id, f"втфэшка, перешли это сообщение @tttuuu:\n{r}")
 
 
+# ГДЗ
+@bot.message_handler(func=lambda message: message.text.lower()[:3] == "гдз")
+def gdz(message):
+    solutions = gdz_search(message.text[4:])
+    if solutions == []:
+        bot.send_message(message.chat.id, "ничего не найдено, номер должен быть написан так: 23.22, либо так: 23 22")
+        return
+    bot.send_message(message.chat.id, "лови")
+    for solution in solutions:
+        bot.send_photo(message.chat.id, solution)
+        
+
+
 # ПОИСК
 @bot.message_handler(content_types=['text'])
 def send(message):
@@ -328,6 +341,7 @@ def send(message):
         bot.send_photo(message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}')
         if results[1][1] > 70:
             bot.send_message(message.chat.id, "вот еще пара вариантов:", reply_markup=other)
+
 
 
 @server.route('/' + '5091025644:AAHdtFbTSvVL5LJVQqsQqo8rv9I3dJ1Uavw', methods=['POST'])
