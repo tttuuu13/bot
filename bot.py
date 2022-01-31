@@ -298,7 +298,7 @@ def send(message):
     counter = 0
     same = []
     for name in names:
-        if message.text.lower() in name.lower() and (name.lower().index(message.text.lower()) = [0]
+        if message.text.lower() in name.lower() and (name.lower().index(message.text.lower()) == [0]
                                                      or name.lower()[name.lower().index(message.text.lower())-1] == " "):
             counter += 1
             same.append(name)
