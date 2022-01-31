@@ -320,7 +320,8 @@ def send(message):
     print(results)
     if results == [] or results[0][1] < 70:
         try:
-            bot.send_photo(message.chat.id, google_search(message.text), caption="в моей базе ничего не нашлось, но я погуглил для тебя")
+            #bot.send_photo(message.chat.id, google_search(message.text), caption="в моей базе ничего не нашлось, но я погуглил для тебя")
+            bot.send_message(message.chat.id, "Похоже ничего не найдено. Если добавишь формулу сам, в слудующий раз я тебе обязательно помогу")
         except Exception as e:
             print(e)
             bot.send_message(message.chat.id, "Похоже ничего не найдено")
