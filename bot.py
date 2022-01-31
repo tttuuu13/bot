@@ -54,6 +54,9 @@ def start(message):
 # посмотреть все формулы
 @bot.message_handler(commands=['show_all'])
 def reset(message):
+    if message.chat.id not in admins:
+        bot.send_message(message.chat.id, "Команда доступна только админам бота")
+        return
     if message.chat.id not in user_dict.keys():
         user_dict[message.chat.id] = Formula()
     user_dict[message.chat.id].formulas_list_message = None
