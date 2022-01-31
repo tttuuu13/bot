@@ -14,7 +14,7 @@ from search import gdz_search, search, google_search
 
 server = Flask(__name__)
 bot = telebot.TeleBot('5091025644:AAHdtFbTSvVL5LJVQqsQqo8rv9I3dJ1Uavw')
-admins = [599040955, 947771996, 1141189705]
+admins = [5990409550, 947771996, 1141189705]
 
 user_dict = {}
 
