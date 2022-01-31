@@ -183,8 +183,7 @@ def upload_data(message):
     elif formula.picture == "skip":
         bot.send_message(message.chat.id, "Готово! Проверь пж")
         markup = InlineKeyboardMarkup(row_width=2)
-        markup.row(InlineKeyboardButton("👌", callback_data="upload"),
-                   InlineKeyboardButton("👎", callback_data="exit"))
+        markup.row(InlineKeyboardButton("👎", callback_data="exit"), InlineKeyboardButton("👌", callback_data="upload"))
         m = bot.send_message(message.chat.id, f"{formula.name}\n\n{formula.description}", reply_markup=markup)
         user_dict[message.chat.id].last_message = m
         return
@@ -201,8 +200,7 @@ def upload_data(message):
         user_dict[message.chat.id].picture = picture
         user_dict[message.chat.id].file_name = message.photo[-1].file_id
         markup = InlineKeyboardMarkup(row_width=2)
-        markup.row(InlineKeyboardButton("👌", callback_data="upload"),
-                   InlineKeyboardButton("👎", callback_data="exit"))
+        markup.row(InlineKeyboardButton("👎", callback_data="exit"), InlineKeyboardButton("👌", callback_data="upload"))
         bot.send_message(message.chat.id, "Готово! Проверь пж")
         m = bot.send_photo(message.chat.id, picture, f"{formula.name}",
                            reply_markup=markup)
@@ -211,8 +209,7 @@ def upload_data(message):
     picture = bot.download_file(bot.get_file(message.photo[-1].file_id).file_path)
     user_dict[message.chat.id].picture = picture
     markup = InlineKeyboardMarkup(row_width=2)
-    markup.row(InlineKeyboardButton("👌", callback_data="upload"),
-               InlineKeyboardButton("👎", callback_data="exit"))
+    markup.row(InlineKeyboardButton("👎", callback_data="exit"), InlineKeyboardButton("👌", callback_data="upload"))
     bot.send_message(message.chat.id, "Готово! Проверь пж")
     m = bot.send_photo(message.chat.id, picture, f"{formula.name}\n\n{formula.description}",
                        reply_markup=markup)
