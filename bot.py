@@ -13,7 +13,7 @@ from search import gdz_search, search, google_search
 
 
 server = Flask(__name__)
-bot = telebot.TeleBot('5091025644:AAHdtFbTSvVL5LJVQqsQqo8rv9I3dJ1Uavw')
+bot = telebot.TeleBot('5128651277:AAGTMBMorng8wztaFPg8W3KEpDOIWZEqRcw')
 admins = [599040955, 947771996, 1141189705]
 
 user_dict = {}
@@ -349,7 +349,7 @@ def send(message):
 
 
 
-@server.route('/' + '5091025644:AAHdtFbTSvVL5LJVQqsQqo8rv9I3dJ1Uavw', methods=['POST'])
+@server.route('/' + '5128651277:AAGTMBMorng8wztaFPg8W3KEpDOIWZEqRcw', methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "!", 200
@@ -358,7 +358,7 @@ def getMessage():
 @server.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url='https://shxa-bot.herokuapp.com/' + '5091025644:AAHdtFbTSvVL5LJVQqsQqo8rv9I3dJ1Uavw')
+    bot.set_webhook(url='https://shxa-bot.herokuapp.com/' + '5128651277:AAGTMBMorng8wztaFPg8W3KEpDOIWZEqRcw')
     return "!", 200
 
 if __name__ == '__main__':
