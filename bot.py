@@ -73,7 +73,7 @@ def show_all(message, page=1):
             i = f"{i[:25]}..."
         markup.add(InlineKeyboardButton(i, callback_data=f"open_{index}|{page}"))
     if ceil(len(dtb.get_names())/10) == 0:
-        markup.add(InlineKeyboardButton("ничего нет", callback_data="ничего нет"))
+        markup.add(InlineKeyboardButton("Ничего нет", callback_data="Ничего нет"))
     elif page == 1 and ceil(len(dtb.get_names())/10) == 1:
         pass
     elif page == 1:
@@ -100,8 +100,8 @@ def open(query):
     index = int(list(query.data.split("|"))[0][5:])
     r = dtb.get_by_index(index)
     markup = InlineKeyboardMarkup()
-    markup.add(InlineKeyboardButton("Удалить", callback_data=f"delete_{index}|{page}"),
-               InlineKeyboardButton("Назад", callback_data=f"go_back_{page}"))
+    markup.add(InlineKeyboardButton("🗑️", callback_data=f"delete_{index}|{page}"),
+               InlineKeyboardButton("🔙", callback_data=f"go_back_{page}"))
     bot.delete_message(query.message.chat.id, user_dict[query.message.chat.id].formulas_list_message.message_id)
     if r[1] != None and r[2] != None:
         m = bot.send_photo(query.message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}\n{r[1]}',
@@ -183,8 +183,8 @@ def upload_data(message):
     elif formula.picture == "skip":
         bot.send_message(message.chat.id, "Готово! Проверь пж")
         markup = InlineKeyboardMarkup(row_width=2)
-        markup.row(InlineKeyboardButton("норм", callback_data="upload"),
-                   InlineKeyboardButton("не очень", callback_data="exit"))
+        markup.row(InlineKeyboardButton("👌", callback_data="upload"),
+                   InlineKeyboardButton("👎", callback_data="exit"))
         m = bot.send_message(message.chat.id, f"{formula.name}\n\n{formula.description}", reply_markup=markup)
         user_dict[message.chat.id].last_message = m
         return
@@ -201,8 +201,8 @@ def upload_data(message):
         user_dict[message.chat.id].picture = picture
         user_dict[message.chat.id].file_name = message.photo[-1].file_id
         markup = InlineKeyboardMarkup(row_width=2)
-        markup.row(InlineKeyboardButton("норм", callback_data="upload"),
-                   InlineKeyboardButton("не очень", callback_data="exit"))
+        markup.row(InlineKeyboardButton("👌", callback_data="upload"),
+                   InlineKeyboardButton("👎", callback_data="exit"))
         bot.send_message(message.chat.id, "Готово! Проверь пж")
         m = bot.send_photo(message.chat.id, picture, f"{formula.name}",
                            reply_markup=markup)
@@ -211,8 +211,8 @@ def upload_data(message):
     picture = bot.download_file(bot.get_file(message.photo[-1].file_id).file_path)
     user_dict[message.chat.id].picture = picture
     markup = InlineKeyboardMarkup(row_width=2)
-    markup.row(InlineKeyboardButton("норм", callback_data="upload"),
-               InlineKeyboardButton("не очень", callback_data="exit"))
+    markup.row(InlineKeyboardButton("👌", callback_data="upload"),
+               InlineKeyboardButton("👎", callback_data="exit"))
     bot.send_message(message.chat.id, "Готово! Проверь пж")
     m = bot.send_photo(message.chat.id, picture, f"{formula.name}\n\n{formula.description}",
                        reply_markup=markup)
@@ -234,7 +234,7 @@ def skip(query):
         bot.clear_step_handler_by_chat_id(query.message.chat.id)
         ask_picture(query.message)
     except:
-        bot.send_message(query.message.chat.id, "упс, что-то не сработало")
+        bot.send_message(query.message.chat.id, "Упс, что-то не сработало, попробуй начать заново")
 
 @bot.callback_query_handler(lambda query: query.data == "skip2")
 def skip(query):
@@ -243,7 +243,7 @@ def skip(query):
         bot.clear_step_handler_by_chat_id(query.message.chat.id)
         upload_data(query.message)
     except:
-        bot.send_message(query.message.chat.id, "упс, что-то не сработало")
+        bot.send_message(query.message.chat.id, "Упс, что-то не сработало, попробуй начать заново")
 
 
 @bot.callback_query_handler(lambda query: query.data == "upload")
@@ -286,9 +286,9 @@ def upload_to_db(query):
 def gdz(message):
     solutions = gdz_search(message.text[4:])
     if solutions == []:
-        bot.send_message(message.chat.id, "ничего не найдено, номер должен быть написан так: 23.22, либо так: 23 22")
+        bot.send_message(message.chat.id, "В учебнике Мордковича по алгебре я такого не нашел, номер должен быть написан так: 23.22, либо так: 23 22")
         return
-    bot.send_message(message.chat.id, "лови")
+    bot.send_message(message.chat.id, "Лови! Используй исключительно для проверки себя!")
     for solution in solutions:
         bot.send_photo(message.chat.id, solution)
         
@@ -307,13 +307,13 @@ def send(message):
             same.append(name)
     if counter > 1:
         if len(message.text) < 3:
-            bot.send_message(message.chat.id, "уточни пожалуйста🥺")
+            bot.send_message(message.chat.id, "Уточни пожалуйста🥺")
             return
         markup = InlineKeyboardMarkup()
         for b in same:
             index = names.index(b)
             markup.add(InlineKeyboardButton(b, callback_data=f"show_{index}"))
-        bot.send_message(message.chat.id, "уточни пожалуйста:", reply_markup=markup)
+        bot.send_message(message.chat.id, "Что из этого ты имел в виду?", reply_markup=markup)
         return
     
     results = search(message.text)
@@ -338,15 +338,15 @@ def send(message):
     if r[1] != None and r[2] != None:
         bot.send_photo(message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}\n{r[1]}')
         if results[1][1] > 70:
-            bot.send_message(message.chat.id, "вот еще пара вариантов:", reply_markup=other)
+            bot.send_message(message.chat.id, "Вот еще пара вариантов:", reply_markup=other)
     elif r[1] != None:
         bot.send_message(message.chat.id, f'{r[0]}\n{r[1]}')
         if results[1][1] > 70:
-            bot.send_message(message.chat.id, "вот еще пара вариантов:", reply_markup=other)
+            bot.send_message(message.chat.id, "Вот еще пара вариантов:", reply_markup=other)
     else:
         bot.send_photo(message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}')
         if results[1][1] > 70:
-            bot.send_message(message.chat.id, "вот еще пара вариантов:", reply_markup=other)
+            bot.send_message(message.chat.id, "Вот еще пара вариантов:", reply_markup=other)
 
 
 
