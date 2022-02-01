@@ -60,7 +60,7 @@ def gdz_search(num):
         else:
             image_bytes = BytesIO(r.content)
             img = Image.open(image_bytes)
-            images.append(img)
-        return images"""
+            images.append(img)"""
+        return images
     except:
         return []
