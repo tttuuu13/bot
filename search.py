@@ -38,7 +38,7 @@ def gdz_search(num):
     try:
         images = []
         n = num.replace(".", " ").split()
-        for i in range(1, 1):
+        for i in range(1, 2):
             r = requests.get(f"https://reshak.ru/reshebniki/algebra/10/mordkovich2/images{i}/{n[0]}-{n[1]}.png")
             if r.content == b'Access Denied':
                 break
