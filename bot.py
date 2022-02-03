@@ -314,8 +314,7 @@ def send(message):
         return
     
     results = search(message.text)
-    print(results)
-    if results == [] or results[0][1] < 70:
+    if results == [] or results[0][1] < 30:
         try:
             #bot.send_photo(message.chat.id, google_search(message.text), caption="в моей базе ничего не нашлось, но я погуглил для тебя")
             bot.send_message(message.chat.id, "Похоже ничего не найдено. Если добавишь формулу сам, в слудующий раз я тебе обязательно помогу")
@@ -325,7 +324,7 @@ def send(message):
         return
     other = InlineKeyboardMarkup()
     for i in results[1:]:
-        if i[1] > 70:
+        if i[1] > 30:
             index = names.index(i[0])
             other.add(InlineKeyboardButton(i[0], callback_data=f"show_{index}"))
         else:
