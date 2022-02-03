@@ -324,7 +324,7 @@ def send(message):
         return
     other = InlineKeyboardMarkup()
     for i in results[1:]:
-        if i[1] > 30:
+        if i[1] > 70:
             index = names.index(i[0])
             other.add(InlineKeyboardButton(i[0], callback_data=f"show_{index}"))
         else:
