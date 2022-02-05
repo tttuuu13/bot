@@ -324,7 +324,7 @@ def send(message):
         return
     other = InlineKeyboardMarkup()
     for i in results[1:]:
-        if i[1] > 70:
+        if i[1] > 80:
             index = names.index(i[0])
             other.add(InlineKeyboardButton(i[0], callback_data=f"show_{index}"))
         else:
@@ -333,15 +333,15 @@ def send(message):
     r = dtb.get_by_index(index)
     if r[1] != None and r[2] != None:
         bot.send_photo(message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}\n{r[1]}')
-        if results[1][1] > 70:
+        if results[1][1] > 80:
             bot.send_message(message.chat.id, "Вот еще пара вариантов:", reply_markup=other)
     elif r[1] != None:
         bot.send_message(message.chat.id, f'{r[0]}\n{r[1]}')
-        if results[1][1] > 70:
+        if results[1][1] > 80:
             bot.send_message(message.chat.id, "Вот еще пара вариантов:", reply_markup=other)
     else:
         bot.send_photo(message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}')
-        if results[1][1] > 70:
+        if results[1][1] > 80:
             bot.send_message(message.chat.id, "Вот еще пара вариантов:", reply_markup=other)
 
 
