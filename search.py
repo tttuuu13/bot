@@ -12,11 +12,17 @@ gis = GoogleImagesSearch("AIzaSyAjWZxqnIHmZ5iBngkqOZeKBvtV2uiMWlE",
 def search(name):
     names = []
     for i in dtb.get_names():
-        ratio = fuzz.token_sort_ratio(name, i)
-        if ratio != 0:
-            names.append((i, ratio))
+        score = 0
+        for word1 in name.split():
+            for word2 in i.split():
+                ratio = fuzz.ratio(word1.lower(), word2.lower())
+                if ratio > 50:
+                    score += ratio
+        score -= len(i.split())
+        names.append((i, score))
     names.sort(key=lambda x: x[1], reverse=True)
-    return names[:5]
+    return names[:10]
+
 
 def google_search(name):
     search_params = {
@@ -53,14 +59,6 @@ def gdz_search(num):
                 image_bytes = BytesIO(r.content)
                 img = Image.open(image_bytes)
                 images.append(img)
-        """
-        r = requests.get(f"https://reshak.ru/reshebniki/algebra/10/mordkovich2/images/{n[0]}-{n[1]}.png")
-        if r.content == b'Access Denied':
-            pass
-        else:
-            image_bytes = BytesIO(r.content)
-            img = Image.open(image_bytes)
-            images.append(img)"""
         return images
     except:
         return []
