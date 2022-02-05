@@ -337,7 +337,7 @@ def send(message):
             pass # ЗАГЛУШКА
             bot.send_message(message.chat.id, "Вот еще пара вариантов:", reply_markup=other)
     elif r[1] != None:
-        bot.send_message(message.chat.id, f'{r[0]}\n{r[1]}')
+        bot.send_message(message.chat.id, f'{r[0]}\n\n{r[1]}')
         if results[1][1] > 160:
             pass # ЗАГЛУШКА
             bot.send_message(message.chat.id, "Вот еще пара вариантов:", reply_markup=other)
