@@ -1,4 +1,3 @@
-from email import message
 import telebot
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
 import random
@@ -9,7 +8,7 @@ import dtb
 from PIL import Image
 import phrases
 from math import ceil
-from search import gdz_search, search, google_search
+from search import gdz_search, search
 
 
 server = Flask(__name__)
@@ -314,7 +313,8 @@ def send(message):
         return
     
     results = search(message.text)
-    if results == [] or results[0][1] < 30:
+    
+    if results == [] or results[0][1] < 50:
         try:
             #bot.send_photo(message.chat.id, google_search(message.text), caption="в моей базе ничего не нашлось, но я погуглил для тебя")
             bot.send_message(message.chat.id, "Похоже ничего не найдено. Если добавишь формулу сам, в слудующий раз я тебе обязательно помогу")
@@ -343,7 +343,6 @@ def send(message):
         bot.send_photo(message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}')
         if results[1][1] > 70:
             bot.send_message(message.chat.id, "Вот еще пара вариантов:", reply_markup=other)
-
 
 
 @server.route('/' + '5128651277:AAGTMBMorng8wztaFPg8W3KEpDOIWZEqRcw', methods=['POST'])
