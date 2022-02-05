@@ -323,7 +323,7 @@ def send(message):
             bot.send_message(message.chat.id, "Похоже ничего не найдено")
         return
     other = InlineKeyboardMarkup()
-    for i in results[1:]:
+    for i in results[1:3]:
         if i[1] > 160:
             index = names.index(i[0])
             other.add(InlineKeyboardButton(i[0], callback_data=f"show_{index}"))
