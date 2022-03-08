@@ -9,7 +9,7 @@ from PIL import Image
 import phrases
 from math import ceil
 from search import gdz_search, search
-
+from time import sleep
 
 server = Flask(__name__)
 bot = telebot.TeleBot('5128651277:AAGTMBMorng8wztaFPg8W3KEpDOIWZEqRcw')
@@ -45,10 +45,13 @@ def start(message):
     name = message.from_user.first_name
     keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=False)
     keyboard.add("Добавить формулу")
-    if message.chat.id in admins:
-        bot.send_message(message.chat.id, f"Привет, {name}, тебе доступны команды админа", reply_markup=keyboard)
-    else:
-        bot.send_message(message.chat.id, f"Приветствую, {name}!", reply_markup=keyboard)
+    bot.send_message(message.chat.id, f"Привет, {name}!")
+    sleep(0.2)
+    bot.send_message(message.chat.id, f'''
+Я помогу тебе с домашкой или подготовкой к экзаменам, напиши мне какую формулу, закон или правило ты ищешь.
+Если же в моей базе ничего не найдется, ты всегда можешь добавить что-то свое.
+Могу помочь с задачами из учебника по алгебре и геометрии, просто напиши "гдз 2.11"
+''', reply_markup=keyboard)
 
 # посмотреть все формулы
 @bot.message_handler(commands=['show_all'])
@@ -282,7 +285,7 @@ def upload_to_db(query):
 def gdz(message):
     solutions = gdz_search(message.text[4:])
     if solutions == []:
-        bot.send_message(message.chat.id, "В учебнике Мордковича по алгебре я такого не нашел, номер должен быть написан так: 23.22, либо так: 23 22")
+        bot.send_message(message.chat.id, "Не нашел такого номера у себя, походу придется решить самому")
         return
     bot.send_message(message.chat.id, "Лови! Используй исключительно для проверки себя!")
     for solution in solutions:
@@ -314,9 +317,8 @@ def send(message):
     
     results = search(message.text)
     
-    if results == [] or results[0][1] < 50:
+    if results == [] or results[0][1] < 75:
         try:
-            #bot.send_photo(message.chat.id, google_search(message.text), caption="в моей базе ничего не нашлось, но я погуглил для тебя")
             bot.send_message(message.chat.id, "Похоже ничего не найдено. Если добавишь формулу сам, в слудующий раз я тебе обязательно помогу")
         except Exception as e:
             print(e)
@@ -346,6 +348,7 @@ def send(message):
         if results[1][1] > 160:
             pass # ЗАГЛУШКА
             bot.send_message(message.chat.id, "Вот еще пара вариантов:", reply_markup=other)
+
 
 
 @server.route('/' + '5128651277:AAGTMBMorng8wztaFPg8W3KEpDOIWZEqRcw', methods=['POST'])
