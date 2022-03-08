@@ -287,7 +287,7 @@ def gdz(message):
     if solutions == []:
         bot.send_message(message.chat.id, "Не нашел такого номера у себя, походу придется решить самому")
         return
-    bot.send_message(message.chat.id, "Лови! Используй исключительно для проверки себя!")
+    bot.send_message(message.chat.id, "Лови! Только не списывай подчистую, а то так и останешься лошком")
     for solution in solutions:
         bot.send_photo(message.chat.id, solution)
         
