@@ -4,6 +4,7 @@ from google_images_search import GoogleImagesSearch
 from io import BytesIO
 from PIL import Image
 import requests
+import string
 
 
 gis = GoogleImagesSearch("AIzaSyAjWZxqnIHmZ5iBngkqOZeKBvtV2uiMWlE",
@@ -14,9 +15,11 @@ def search(name):
     for i in dtb.get_names():
         score = 0
         for word1 in name.split():
+            word1.translate(str.maketrans(dict.fromkeys(string.punctuation)))
             for word2 in i.split():
+                word2.translate(str.maketrans(dict.fromkeys(string.punctuation)))
                 ratio = fuzz.ratio(word1.lower(), word2.lower())
-                if ratio > 50:
+                if ratio > 70:
                     score += ratio
         score -= len(i.split())
         names.append((i, score))
@@ -26,8 +29,7 @@ def search(name):
 
 def google_search(name):
     search_params = {
-        "q": name.lower() + " формула",
-        "safe": "high",
+        "q": name.lower(),
         "num": 1,
         "fileType": "png|jpg"
     }
@@ -42,23 +44,60 @@ def google_search(name):
 
 def gdz_search(num):
     try:
+        int(num)
         images = []
-        n = num.replace(".", " ").split()
-        for i in range(1, 2):
-            r = requests.get(f"https://reshak.ru/reshebniki/algebra/10/mordkovich2/images{i}/{n[0]}-{n[1]}.png")
+        try:
+            images = []
+            r = requests.get(f"https://reshak.ru/reshebniki/geometriya/10/atanasyan10-11/{num}.png")
             if r.content == b'Access Denied':
-                break
+                return []
             else:
                 image_bytes = BytesIO(r.content)
                 img = Image.open(image_bytes)
                 images.append(img)
-            r = requests.get(f"https://reshak.ru/reshebniki/algebra/10/mordkovich2/images{i}/{n[0]}-{n[1]}-.png")
+            r = requests.get(f"https://reshak.ru/reshebniki/geometriya/10/atanasyan10-11/{num}-.png")
             if r.content == b'Access Denied':
-                continue
+                return images
             else:
                 image_bytes = BytesIO(r.content)
                 img = Image.open(image_bytes)
                 images.append(img)
-        return images
+            r = requests.get(f"https://reshak.ru/reshebniki/geometriya/10/atanasyan10-11/{num}--.png")
+            if r.content == b'Access Denied':
+                return images
+            else:
+                image_bytes = BytesIO(r.content)
+                img = Image.open(image_bytes)
+                images.append(img)
+            return images
+        except:
+            return []
+
     except:
-        return []
+        try:
+            images = []
+            n = num.replace(".", " ").split()
+            r = requests.get(f"https://reshak.ru/reshebniki/algebra/10/mordkovich2/images1/{n[0]}-{n[1]}.png")
+            if r.content == b'Access Denied':
+                return []
+            else:
+                image_bytes = BytesIO(r.content)
+                img = Image.open(image_bytes)
+                images.append(img)
+            r = requests.get(f"https://reshak.ru/reshebniki/algebra/10/mordkovich2/images1/{n[0]}-{n[1]}-.png")
+            if r.content == b'Access Denied':
+                return images
+            else:
+                image_bytes = BytesIO(r.content)
+                img = Image.open(image_bytes)
+                images.append(img)
+            r = requests.get(f"https://reshak.ru/reshebniki/algebra/10/mordkovich2/images1/{n[0]}-{n[1]}--.png")
+            if r.content == b'Access Denied':
+                return images
+            else:
+                image_bytes = BytesIO(r.content)
+                img = Image.open(image_bytes)
+                images.append(img)
+            return images
+        except:
+            return []
