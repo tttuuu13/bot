@@ -14,14 +14,21 @@ def search(name):
     names = []
     for i in dtb.get_names():
         score = 0
+        mutual_words = []
         for word1 in name.split():
-            word1.translate(str.maketrans(dict.fromkeys(string.punctuation)))
+            word1 = word1.translate(str.maketrans(dict.fromkeys(string.punctuation)))
+            repeating_word = False
             for word2 in i.split():
-                word2.translate(str.maketrans(dict.fromkeys(string.punctuation)))
+                word2 = word2.translate(str.maketrans(dict.fromkeys(string.punctuation)))
                 ratio = fuzz.ratio(word1.lower(), word2.lower())
-                if ratio > 70:
-                    score += ratio
-        score -= len(i.split())
+                if ratio > 80:
+                    for w in mutual_words:
+                        if fuzz.ratio(word1.lower(), w.lower()) > 80:
+                            repeating_word = True
+                            break
+                    if not repeating_word:
+                        score += ratio
+                        mutual_words.append(word2)
         names.append((i, score))
     names.sort(key=lambda x: x[1], reverse=True)
     return names[:10]
