@@ -53,6 +53,11 @@ def start(message):
 Могу помочь с задачами из учебника по алгебре и геометрии, просто напиши "гдз 2.11"
 ''', reply_markup=keyboard)
 
+@bot.message_handler(commands=['spam'])
+def spam(message):
+    bot.send_message(947771996, message.text[6:])
+    bot.send_message(599040955, message.text[6:])
+
 # посмотреть все формулы
 @bot.message_handler(commands=['show_all'])
 def reset(message):
@@ -287,7 +292,7 @@ def gdz(message):
     if solutions == []:
         bot.send_message(message.chat.id, "Не нашел такого номера у себя, походу придется решить самому")
         return
-    bot.send_message(message.chat.id, "Лови! Только не списывай подчистую, а то так и останешься лошком")
+    bot.send_message(message.chat.id, "Лови! Используй исключительно для проверки себя!")
     for solution in solutions:
         bot.send_photo(message.chat.id, solution)
         
@@ -317,7 +322,7 @@ def send(message):
     
     results = search(message.text)
     
-    if results == [] or results[0][1] < 75:
+    if results == [] or results[0][1] < len(message.text.split()) * 50:
         try:
             bot.send_message(message.chat.id, "Похоже ничего не найдено. Если добавишь формулу сам, в слудующий раз я тебе обязательно помогу")
         except Exception as e:
