@@ -46,7 +46,7 @@ def start(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=False)
     keyboard.add("Добавить формулу")
     bot.send_sticker(message.chat.id, random.choice(['CAACAgIAAxkBAAEEeq1iWc69mwmTOiCArKuVx8o_V4qR_QACEhgAAhAemUi_BAQfVRhL4SME',
-                                                     'CAACAgIAAxkBAAEEeq9iWc8vSlgKd5mmC5CL-YeoX2LDFgACBQADwDZPE_lqX5qCa011IwQ'])
+                                                     'CAACAgIAAxkBAAEEeq9iWc8vSlgKd5mmC5CL-YeoX2LDFgACBQADwDZPE_lqX5qCa011IwQ']))
     bot.send_message(message.chat.id, f"Привет, {name}!")
     sleep(0.8)
     bot.send_message(message.chat.id, f'''
@@ -272,7 +272,7 @@ def upload_to_db(query):
         if r:
             if random.randint(1, 2) == 1:
                 bot.send_sticker(message.chat.id, random.choice(['CAACAgQAAxkBAAEEestiWdD7RyPw-aBBsoKr5XwWKS_aVwACtAsAAsYFiFE6kIdMA45ZSCME',
-                                                                 'CAACAgIAAxkBAAEEettiWdF9uZiRYW_3nsRevPR7UF3g3QACDAADwDZPE-LPI__Cd5-8IwQ'])
+                                                                 'CAACAgIAAxkBAAEEettiWdF9uZiRYW_3nsRevPR7UF3g3QACDAADwDZPE-LPI__Cd5-8IwQ']))
             else:
                 bot.send_message(query.message.chat.id, "Отлично, спасибо, что учишь меня новым вещам")
         else:
@@ -282,7 +282,7 @@ def upload_to_db(query):
         if r:
             if random.randint(1, 2) == 1:
                 bot.send_sticker(message.chat.id, random.choice(['CAACAgQAAxkBAAEEestiWdD7RyPw-aBBsoKr5XwWKS_aVwACtAsAAsYFiFE6kIdMA45ZSCME',
-                                                                 'CAACAgIAAxkBAAEEettiWdF9uZiRYW_3nsRevPR7UF3g3QACDAADwDZPE-LPI__Cd5-8IwQ'])
+                                                                 'CAACAgIAAxkBAAEEettiWdF9uZiRYW_3nsRevPR7UF3g3QACDAADwDZPE-LPI__Cd5-8IwQ']))
             else:
                 bot.send_message(query.message.chat.id, "Отлично, спасибо, что учишь меня новым вещам")
         else:
@@ -292,7 +292,7 @@ def upload_to_db(query):
         if r:
             if random.randint(1, 2) == 1:
                 bot.send_sticker(message.chat.id, random.choice(['CAACAgQAAxkBAAEEestiWdD7RyPw-aBBsoKr5XwWKS_aVwACtAsAAsYFiFE6kIdMA45ZSCME',
-                                                                 'CAACAgIAAxkBAAEEettiWdF9uZiRYW_3nsRevPR7UF3g3QACDAADwDZPE-LPI__Cd5-8IwQ'])
+                                                                 'CAACAgIAAxkBAAEEettiWdF9uZiRYW_3nsRevPR7UF3g3QACDAADwDZPE-LPI__Cd5-8IwQ']))
             else:
                 bot.send_message(query.message.chat.id, "Отлично, спасибо, что учишь меня новым вещам")
         else:
@@ -341,7 +341,7 @@ def send(message):
             if random.randint(1, 2) == 1:
                 bot.send_sticker(message.chat.id, random.choice(['CAACAgQAAxkBAAEEet9iWdIfgnPI5XKgw6Mvt4iwNMe8-QACogsAAqQVWVDViBUSoq6WZyME',
                                                                  'CAACAgQAAxkBAAEEexRiWdL2rAm9Z1HPhc9R82dX3KDh5AAC6AoAAt9QiFHGFAABQGOzE1cjBA',
-                                                                 'CAACAgIAAxkBAAEEexZiWdM4enMatpRp3o3PbGAPatfonAACGAADwDZPE9b6J7-cahj4IwQ'])
+                                                                 'CAACAgIAAxkBAAEEexZiWdM4enMatpRp3o3PbGAPatfonAACGAADwDZPE9b6J7-cahj4IwQ']))
             else:
                 bot.send_message(message.chat.id, "Похоже ничего не найдено. Если добавишь формулу сам, в слудующий раз я тебе обязательно помогу")
         except Exception as e:
