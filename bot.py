@@ -34,7 +34,7 @@ def oxxxy(message):
     bot.send_message(message.chat.id, phrases.oxxxy_phrases[phrases.oxxxy_phrases.index(message.text.lower()) + 1])
 
 # будет отвечать на слово, содержащее "бот"
-@bot.message_handler(content_types=['text'], func=lambda message: message.text != None and "бот" == message.text.lower()[:3])
+@bot.message_handler(func=lambda message: message.text != None and "бот" == message.text.lower()[:3])
 def answer(message):
     bot.send_message(message.chat.id, random.choice(phrases.bot_answer).format(name=message.from_user.first_name))
 
@@ -286,7 +286,7 @@ def upload_to_db(query):
 
 
 # ГДЗ
-@bot.message_handler(content_types=['text'], func=lambda message: message.text.lower()[:3] == "гдз")
+@bot.message_handler(func=lambda message: message.text != None and message.text.lower()[:3] == "гдз")
 def gdz(message):
     solutions = gdz_search(message.text[4:])
     if solutions == []:
