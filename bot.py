@@ -47,8 +47,9 @@ def start(message):
     keyboard.add("Добавить формулу")
     bot.send_sticker(message.chat.id, random.choice(['CAACAgIAAxkBAAEEeq1iWc69mwmTOiCArKuVx8o_V4qR_QACEhgAAhAemUi_BAQfVRhL4SME',
                                                      'CAACAgIAAxkBAAEEeq9iWc8vSlgKd5mmC5CL-YeoX2LDFgACBQADwDZPE_lqX5qCa011IwQ']))
+    sleep(0.6)
     bot.send_message(message.chat.id, f"Привет, {name}!")
-    sleep(0.8)
+    sleep(0.6)
     bot.send_message(message.chat.id, f'''
 Я помогу тебе с домашкой или подготовкой к экзаменам, напиши мне какую формулу, закон или правило ты ищешь.
 Если же в моей базе ничего не найдется, ты всегда можешь добавить что-то свое.
