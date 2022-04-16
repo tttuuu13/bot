@@ -337,7 +337,7 @@ def send(message):
     
     results = search(message.text)
     
-    if results == [] or results[0][1] < len(message.text.split()) * 50:
+    if results == [] or results[0][1] < len(message.text.split()) * 40:
         try:
             if random.randint(1, 2) == 1:
                 bot.send_sticker(message.chat.id, random.choice(['CAACAgQAAxkBAAEEet9iWdIfgnPI5XKgw6Mvt4iwNMe8-QACogsAAqQVWVDViBUSoq6WZyME',
@@ -350,8 +350,8 @@ def send(message):
             bot.send_message(message.chat.id, "Похоже ничего не найдено")
         return
     other = InlineKeyboardMarkup()
-    for i in results[1:3]:
-        if i[1] > 160:
+    for i in results[1:5]:
+        if i[1] > len(message.text.split()) * 40:
             index = names.index(i[0])
             other.add(InlineKeyboardButton(i[0], callback_data=f"show_{index}"))
         else:
@@ -360,18 +360,18 @@ def send(message):
     r = dtb.get_by_index(index)
     if r[1] != None and r[2] != None:
         bot.send_photo(message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}\n\n{r[1]}')
-        if results[1][1] > 160:
-            pass # ЗАГЛУШКА
+        if results[1][1] > len(message.text.split()) * 40:
+            #pass # ЗАГЛУШКА
             bot.send_message(message.chat.id, "Вот еще пара вариантов:", reply_markup=other)
     elif r[1] != None:
         bot.send_message(message.chat.id, f'{r[0]}\n\n{r[1]}')
-        if results[1][1] > 160:
-            pass # ЗАГЛУШКА
+        if results[1][1] > len(message.text.split()) * 40:
+            #pass # ЗАГЛУШКА
             bot.send_message(message.chat.id, "Вот еще пара вариантов:", reply_markup=other)
     else:
         bot.send_photo(message.chat.id, Image.open(io.BytesIO(r[2])), f'{r[0]}')
-        if results[1][1] > 160:
-            pass # ЗАГЛУШКА
+        if results[1][1] > len(message.text.split()) * 40:
+            #pass # ЗАГЛУШКА
             bot.send_message(message.chat.id, "Вот еще пара вариантов:", reply_markup=other)
 
 
