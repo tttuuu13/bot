@@ -84,21 +84,21 @@ def gdz_search(num):
         try:
             images = []
             n = num.replace(".", " ").split()
-            r = requests.get(f"https://reshak.ru/reshebniki/algebra/10/mordkovich2/images1/{n[0]}-{n[1]}.png")
+            r = requests.get(f"https://reshak.ru/reshebniki/algebra/11/mordkovich2/images1/{n[0]}-{n[1]}.png")
             if r.content == b'Access Denied':
                 return []
             else:
                 image_bytes = BytesIO(r.content)
                 img = Image.open(image_bytes)
                 images.append(img)
-            r = requests.get(f"https://reshak.ru/reshebniki/algebra/10/mordkovich2/images1/{n[0]}-{n[1]}-.png")
+            r = requests.get(f"https://reshak.ru/reshebniki/algebra/11/mordkovich2/images1/{n[0]}-{n[1]}-.png")
             if r.content == b'Access Denied':
                 return images
             else:
                 image_bytes = BytesIO(r.content)
                 img = Image.open(image_bytes)
                 images.append(img)
-            r = requests.get(f"https://reshak.ru/reshebniki/algebra/10/mordkovich2/images1/{n[0]}-{n[1]}--.png")
+            r = requests.get(f"https://reshak.ru/reshebniki/algebra/11/mordkovich2/images1/{n[0]}-{n[1]}--.png")
             if r.content == b'Access Denied':
                 return images
             else:
